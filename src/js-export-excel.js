@@ -9,7 +9,7 @@ require('script-loader!blob.js/Blob');
  * mail：cuikangjie_90h@126.com
  */
  const changeData = function(data, filter) {
-     let sj = data,
+     var sj = data,
          f = filter,
          re = [];
      Array.isArray(data) ? (function() {
@@ -17,7 +17,7 @@ require('script-loader!blob.js/Blob');
          f ? (function() {
              //存在过滤
              sj.forEach(function(obj) {
-                 let one = [];
+                 var one = [];
                  filter.forEach(function(no) {
                      one.push(obj[no]);
                  });
@@ -26,8 +26,8 @@ require('script-loader!blob.js/Blob');
          })() : (function() {
              //不存在过滤
              sj.forEach(function(obj) {
-                 let col = Object.keys(obj);
-                 let one = [];
+                 var col = Object.keys(obj);
+                 var one = [];
                  col.forEach(function(no) {
                      one.push(obj[no]);
                  });
@@ -45,8 +45,8 @@ require('script-loader!blob.js/Blob');
  // 转换数据
  const sheetChangeData = function(data) {
 
-     let ws = {};
-     let range = {
+     var ws = {};
+     var range = {
          s: {
              c: 10000000,
              r: 10000000
@@ -56,17 +56,17 @@ require('script-loader!blob.js/Blob');
              r: 0
          }
      };
-     for (let R = 0; R != data.length; ++R) {
-         for (let C = 0; C != data[R].length; ++C) {
+     for (var R = 0; R != data.length; ++R) {
+         for (var C = 0; C != data[R].length; ++C) {
              if (range.s.r > R) range.s.r = R;
              if (range.s.c > C) range.s.c = C;
              if (range.e.r < R) range.e.r = R;
              if (range.e.c < C) range.e.c = C;
-             let cell = {
+             var cell = {
                  v: data[R][C]
              };
              if (cell.v == null) continue;
-             let cell_ref = XLSX.utils.encode_cell({
+             var cell_ref = XLSX.utils.encode_cell({
                  c: C,
                  r: R
              });
@@ -86,19 +86,19 @@ require('script-loader!blob.js/Blob');
  }
 
  const s2ab = function(s) {
-     let buf = new ArrayBuffer(s.length);
-     let view = new Uint8Array(buf);
-     for (let i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+     var buf = new ArrayBuffer(s.length);
+     var view = new Uint8Array(buf);
+     for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
      return buf;
  };
  const datenum = function(v, date1904) {
      if (date1904) v += 1462;
-     let epoch = Date.parse(v);
+     var epoch = Date.parse(v);
      return (epoch - new Date(Date.UTC(1899, 11, 30))) / (24 * 60 * 60 * 1000);
  };
 
  const exportExcel = function (options) {
-    let _options = {
+    var _options = {
         fileName: options.fileName || 'download',
         datas: options.datas,
         workbook: {
@@ -109,13 +109,13 @@ require('script-loader!blob.js/Blob');
 
     const instance = {
         saveExcel: function () {
-            let wb = _options.workbook;
+            var wb = _options.workbook;
         
             _options.datas.forEach(function(data, index) {
-                let sheetHeader = data.sheetHeader || null;
-                let sheetData = data.sheetData;
-                let sheetName = data.sheetName || 'sheet' + (index + 1);
-                let sheetFilter = data.sheetFilter || null;
+                var sheetHeader = data.sheetHeader || null;
+                var sheetData = data.sheetData;
+                var sheetName = data.sheetName || 'sheet' + (index + 1);
+                var sheetFilter = data.sheetFilter || null;
         
                 sheetData = changeData(sheetData, sheetFilter);
         
@@ -123,7 +123,7 @@ require('script-loader!blob.js/Blob');
                     sheetData.unshift(sheetHeader)
                 }
         
-                let ws = sheetChangeData(sheetData);
+                var ws = sheetChangeData(sheetData);
         
                 ws['!merges'] = [];
         
@@ -131,7 +131,7 @@ require('script-loader!blob.js/Blob');
                 wb.Sheets[sheetName] = ws;
             });
         
-            let wbout = XLSX.write(wb, {
+            var wbout = XLSX.write(wb, {
                 bookType: 'xlsx',
                 bookSST: false,
                 type: 'binary'
