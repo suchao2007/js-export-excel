@@ -145,4 +145,4 @@ require('script-loader!blob.js/Blob');
     return instance;
  }
 
- module.exports = exportExcel;
+export default exportExcel;
